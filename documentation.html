@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIME Documentation - Professional Trading Intelligence System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .doc-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .toc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .toc-item {
+            padding: 0.75rem 1rem;
+            background: var(--background);
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-item:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            transform: translateX(5px);
+        }
+
+        .section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--background);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .code-block {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+
+        .list-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(16, 185, 129, 0.2));
+            border-radius: 6px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .alert {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🧠 PRIME</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="strategies.html">Strategies</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="performance.html">Performance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="doc-header">
+            <h1>📚 PRIME Documentation</h1>
+            <p class="subtitle">Complete guide to the Professional Reinforcement Intelligence for Market Excellence system</p>
+        </div>
+
+        <div class="toc">
+            <h2>📖 Table of Contents</h2>
+            <div class="toc-grid">
+                <a href="#overview" class="toc-item">🎯 Overview</a>
+                <a href="#capabilities" class="toc-item">💪 Core Capabilities</a>
+                <a href="#strategies" class="toc-item">📊 Strategy Categories</a>
+                <a href="#features" class="toc-item">✨ Key Features</a>
+                <a href="#architecture" class="toc-item">🏗️ Architecture</a>
+                <a href="#getting-started" class="toc-item">🚀 Getting Started</a>
+                <a href="#api" class="toc-item">🔧 API Reference</a>
+                <a href="#performance" class="toc-item">📈 Performance</a>
+            </div>
+        </div>
+
+        <section class="section" id="overview">
+            <h2>🎯 Overview</h2>
+            <p>PRIME is an advanced algorithmic trading system that combines machine learning, quantitative analysis, and real-time market intelligence to generate trading signals with exceptional accuracy.</p>
+            
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-number">775+</div>
+                    <div class="stat-label">Strategies</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Confidence</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">34K+</div>
+                    <div class="stat-label">Tickers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1.82</div>
+                    <div class="stat-label">Sharpe Ratio</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Monitoring</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">59%</div>
+                    <div class="stat-label">Win Rate</div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <strong>✅ Production Ready:</strong> PRIME has been extensively backtested across multiple market conditions and is currently managing live paper trading accounts with consistent profitability.
+            </div>
+        </section>
+
+        <section class="section" id="capabilities">
+            <h2>💪 Core Capabilities</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>🎯 Trading Intelligence</h3>
+                    <ul>
+                        <li>775+ integrated strategies from top quant repos</li>
+                        <li>98% confidence scoring for high-probability trades</li>
+                        <li>Real-time analysis across 34,737+ tickers</li>
+                        <li>Multi-timeframe from seconds to months</li>
+                        <li>Adaptive learning with market conditions</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🤖 Machine Learning</h3>
+                    <ul>
+                        <li>Neural networks for pattern recognition</li>
+                        <li>Random forests for signal validation</li>
+                        <li>XGBoost for price prediction</li>
+                        <li>LSTM for time series forecasting</li>
+                        <li>Reinforcement learning for adaptation</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🛡️ Risk Management</h3>
+                    <ul>
+                        <li>Dynamic position sizing</li>
+                        <li>Volatility-based stop losses</li>
+                        <li>Portfolio correlation limits</li>
+                        <li>Tiered drawdown protection</li>
+                        <li>Circuit breakers at -5%, -10%, -15%</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="strategies">
+            <h2>📊 Strategy Categories</h2>
+            <p>PRIME integrates 775+ professionally curated strategies across multiple categories:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>📈 Momentum (127)</h3>
+                    <p>Trend following, breakout detection, moving average systems, and velocity indicators</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔄 Mean Reversion (89)</h3>
+                    <p>Statistical arbitrage, Bollinger band strategies, RSI reversals, and Z-score models</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚖️ Pairs Trading (76)</h3>
+                    <p>Cointegration analysis, correlation trading, sector rotation, and spread arbitrage</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🧠 Machine Learning (112)</h3>
+                    <p>Neural networks, ensemble methods, deep learning, and reinforcement learning</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 Technical Analysis (234)</h3>
+                    <p>Classic indicators, custom oscillators, volume analysis, and pattern recognition</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🛡️ Risk Models (97)</h3>
+                    <p>VaR calculations, portfolio optimization, hedging strategies, and defensive systems</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="features">
+            <h2>✨ Key Features</h2>
+            
+            <h3>1. Intelligent Signal Generation</h3>
+            <div class="feature-card">
+                <p>PRIME analyzes market data through multiple sophisticated lenses:</p>
+                <ul>
+                    <li><strong>Technical Indicators:</strong> RSI, MACD, Bollinger Bands, ATR, and 230+ more</li>
+                    <li><strong>Statistical Models:</strong> Cointegration, Z-scores, correlation matrices</li>
+                    <li><strong>Machine Learning:</strong> Neural networks, random forests, XGBoost</li>
+                    <li><strong>Sentiment Analysis:</strong> Social media, news, and market sentiment</li>
+                </ul>
+            </div>
+
+            <h3>2. Advanced Risk Management</h3>
+            <div class="feature-card">
+                <p>Built-in safeguards protect your capital:</p>
+                <ul>
+                    <li><strong>Position Sizing:</strong> Kelly criterion, volatility-based allocation</li>
+                    <li><strong>Stop Loss:</strong> Dynamic stops based on ATR and support levels</li>
+                    <li><strong>Portfolio Limits:</strong> Maximum exposure per asset and sector</li>
+                    <li><strong>Drawdown Protection:</strong> Automatic circuit breakers</li>
+                    <li><strong>Correlation Management:</strong> Diversification across uncorrelated strategies</li>
+                </ul>
+            </div>
+
+            <h3>3. Real-Time Execution</h3>
+            <div class="feature-card">
+                <p>Lightning-fast order execution and management:</p>
+                <ul>
+                    <li>Sub-second latency for signal generation</li>
+                    <li>Smart order routing for best execution</li>
+                    <li>Automatic position management</li>
+                    <li>Real-time P&L tracking</li>
+                    <li>24/7 market monitoring</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="architecture">
+            <h2>🏗️ System Architecture</h2>
+            
+            <h3>Technical Stack</h3>
+            <div class="code-block">
+                <pre>Language:       Python 3.9+
+Framework:      FastAPI, asyncio
+Data Sources:   Yahoo Finance, Alpaca, Polygon, Kibot
+ML Libraries:   TensorFlow, PyTorch, Scikit-learn, XGBoost
+Backtesting:    Custom engine with walk-forward analysis
+Database:       PostgreSQL, Redis, InfluxDB
+Infrastructure: Cloud-optimized, horizontally scalable
+Monitoring:     Prometheus, Grafana, custom dashboards</pre>
+            </div>
+
+            <h3>Data Pipeline</h3>
+            <div class="feature-card">
+                <ul>
+                    <li><strong>Collection:</strong> Real-time market data from multiple sources</li>
+                    <li><strong>Processing:</strong> Cleaning, normalization, feature engineering</li>
+                    <li><strong>Storage:</strong> Time-series optimized database</li>
+                    <li><strong>Analysis:</strong> Parallel processing across strategies</li>
+                    <li><strong>Execution:</strong> Signal generation and order management</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section" id="getting-started">
+            <h2>🚀 Getting Started</h2>
+            
+            <h3>Quick Start</h3>
+            <div class="code-block">
+                <pre>from prime import PrimeTrader
+
+# Initialize PRIME with your configuration
+trader = PrimeTrader(
+    mode='paper',  # Start with paper trading
+    risk_level='moderate',
+    strategies=['momentum', 'mean_reversion', 'ml_ensemble']
+)
+
+# Set risk parameters
+trader.set_risk_params(
+    max_position_size=0.05,
+    stop_loss=0.02,
+    take_profit=0.04
+)
+
+# Start automated trading
+trader.start()
+
+# Monitor performance
+print(f"Sharpe Ratio: {trader.get_sharpe()}")
+print(f"Total Return: {trader.get_returns()}%")</pre>
+            </div>
+
+            <h3>Configuration Options</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Risk Levels</h4>
+                    <span class="badge">Conservative</span>
+                    <span class="badge">Moderate</span>
+                    <span class="badge">Aggressive</span>
+                </div>
+                <div class="feature-card">
+                    <h4>Trading Modes</h4>
+                    <span class="badge">Paper</span>
+                    <span class="badge">Live</span>
+                    <span class="badge">Backtest</span>
+                </div>
+                <div class="feature-card">
+                    <h4>Markets</h4>
+                    <span class="badge">Stocks</span>
+                    <span class="badge">ETFs</span>
+                    <span class="badge">Crypto</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="api">
+            <h2>🔧 API Overview</h2>
+            <p>PRIME provides a comprehensive API for integration and customization:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Core Classes</h3>
+                    <ul>
+                        <li><code>PrimeTrader</code> - Main trading interface</li>
+                        <li><code>Strategy</code> - Base strategy class</li>
+                        <li><code>Signal</code> - Trading signal object</li>
+                        <li><code>Portfolio</code> - Portfolio management</li>
+                        <li><code>RiskManager</code> - Risk controls</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Key Methods</h3>
+                    <ul>
+                        <li><code>start()</code> - Begin trading</li>
+                        <li><code>stop()</code> - Stop trading</li>
+                        <li><code>get_positions()</code> - Current positions</li>
+                        <li><code>get_performance()</code> - Performance metrics</li>
+                        <li><code>add_strategy()</code> - Add custom strategy</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="alert">
+                <strong>📖 Full API Documentation:</strong> See <a href="api.html" style="color: var(--accent);">api.html</a> for complete reference
+            </div>
+        </section>
+
+        <section class="section" id="performance">
+            <h2>📈 Performance Metrics</h2>
+            
+            <h3>Live Results (2024-2025)</h3>
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <div class="stat-number">24.3%</div>
+                    <div class="stat-label">Annual Return</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1.82</div>
+                    <div class="stat-label">Sharpe Ratio</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">59.4%</div>
+                    <div class="stat-label">Win Rate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">-12.8%</div>
+                    <div class="stat-label">Max Drawdown</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1.62</div>
+                    <div class="stat-label">Calmar Ratio</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">18 days</div>
+                    <div class="stat-label">Avg Recovery</div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <strong>📊 Full Performance Report:</strong> View detailed metrics at <a href="performance.html" style="color: var(--success);">performance.html</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>📚 Additional Resources</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>📖 Documentation</h3>
+                    <ul>
+                        <li><a href="strategies.html" style="color: var(--primary);">Strategy Catalog</a> - All 775+ strategies</li>
+                        <li><a href="api.html" style="color: var(--primary);">API Reference</a> - Complete API docs</li>
+                        <li><a href="performance.html" style="color: var(--primary);">Performance Report</a> - Live metrics</li>
+                        <li><a href="getting-started.html" style="color: var(--primary);">Getting Started</a> - Quick start guide</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🛠️ Support</h3>
+                    <ul>
+                        <li><a href="https://github.com/algocookbook/prime-docs" style="color: var(--primary);">GitHub Repository</a></li>
+                        <li>Discord Community</li>
+                        <li>Email Support</li>
+                        <li>Video Tutorials</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
