@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - PRIME Trading System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .search-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .faq-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            padding: 0.5rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .faq-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .faq-item {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary);
+        }
+
+        .faq-question {
+            padding: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .faq-arrow {
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+
+        .faq-item.open .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.25rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+        }
+
+        .faq-item.open .faq-answer {
+            padding: 0 1.25rem 1.25rem;
+            max-height: 500px;
+        }
+
+        .code-inline {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--primary);
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .contact-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🧠 PRIME</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="risk-disclosure.html">Risk Disclosure</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>❓ Frequently Asked Questions</h1>
+            <p class="subtitle">Find answers to common questions about PRIME</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search FAQ..." id="faqSearch">
+        </div>
+
+        <div class="faq-categories">
+            <button class="category-btn active" data-category="all">All</button>
+            <button class="category-btn" data-category="getting-started">Getting Started</button>
+            <button class="category-btn" data-category="trading">Trading</button>
+            <button class="category-btn" data-category="technical">Technical</button>
+            <button class="category-btn" data-category="safety">Safety</button>
+        </div>
+
+        <section class="faq-section" data-category="getting-started">
+            <h2 class="section-title">🚀 Getting Started</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What is PRIME and how does it work?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    PRIME is an advanced algorithmic trading system that combines 775+ professional trading strategies with machine learning models. It analyzes market data in real-time, generates trading signals, and can execute trades automatically through your broker API. The system uses multiple layers of risk management to protect capital while seeking profitable opportunities.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How much capital do I need to start?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    For paper trading: $0 (uses simulated money).<br><br>
+                    For live trading: Minimum $25,000 recommended to avoid Pattern Day Trading restrictions in the US. You can start with less, but will be limited to fewer trades. We strongly recommend starting with paper trading regardless of capital.
+                    <div class="warning-box">
+                        ⚠️ Never trade with money you cannot afford to lose!
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    What brokers are supported?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Currently supported brokers:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Alpaca (recommended for US traders)</li>
+                        <li>Interactive Brokers</li>
+                        <li>TD Ameritrade</li>
+                        <li>Binance (crypto)</li>
+                        <li>Coinbase Pro (crypto)</li>
+                    </ul>
+                    More brokers are being added. Check documentation for the latest list.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do I need programming experience?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Basic Python knowledge is helpful but not required for basic usage. You can use PRIME with configuration files and minimal code. However, to customize strategies or add your own, Python programming skills are necessary.
+                    <div class="info-box">
+                        💡 We provide extensive examples and templates to help you get started!
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section" data-category="trading">
+            <h2 class="section-title">📊 Trading Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What returns can I expect?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="warning-box">
+                        ⚠️ <strong>NO RETURNS ARE GUARANTEED!</strong> Past performance does not predict future results.
+                    </div>
+                    Historical backtests show various results depending on market conditions, strategies used, and risk settings. Some strategies have shown 20-30% annual returns in backtests, but real trading often differs significantly. Many traders lose money. Only trade with risk capital.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How many trades does PRIME make per day?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    This depends on your configuration:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li><strong>Conservative:</strong> 1-5 trades per day</li>
+                        <li><strong>Moderate:</strong> 5-20 trades per day</li>
+                        <li><strong>Aggressive:</strong> 20-50+ trades per day</li>
+                    </ul>
+                    You can set maximum trade limits and adjust strategy parameters to control trading frequency.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I override or stop trades manually?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! PRIME includes several safety features:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Emergency stop button to halt all trading</li>
+                        <li>Manual override for any position</li>
+                        <li>Ability to close all positions immediately</li>
+                        <li>Trade approval mode (requires confirmation)</li>
+                    </ul>
+                    You always maintain full control over your account.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    What happens during a market crash?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    PRIME has multiple safeguards for market crashes:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Circuit breakers trigger at -5%, -10%, -15% drawdown</li>
+                        <li>Automatic position reduction in high volatility</li>
+                        <li>Stop-loss orders on all positions</li>
+                        <li>Maximum daily loss limits</li>
+                        <li>Correlation monitoring to prevent concentrated risk</li>
+                    </ul>
+                    However, no system can completely prevent losses in extreme market conditions.
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section" data-category="technical">
+            <h2 class="section-title">🔧 Technical Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What are the system requirements?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Minimum requirements:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li><strong>OS:</strong> Windows 10+, macOS 10.14+, Ubuntu 20.04+</li>
+                        <li><strong>Python:</strong> 3.9 or higher</li>
+                        <li><strong>RAM:</strong> 8GB minimum, 16GB recommended</li>
+                        <li><strong>Storage:</strong> 10GB free space</li>
+                        <li><strong>Internet:</strong> Stable broadband connection</li>
+                        <li><strong>CPU:</strong> 4 cores minimum, 8 cores recommended</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I run PRIME in the cloud?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! PRIME works well on cloud platforms:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>AWS EC2 (t3.large or better)</li>
+                        <li>Google Cloud Platform</li>
+                        <li>Microsoft Azure</li>
+                        <li>DigitalOcean</li>
+                        <li>Oracle Cloud</li>
+                    </ul>
+                    Cloud deployment ensures 24/7 uptime and reduces latency. We provide deployment scripts for major platforms.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I update PRIME?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Update using pip:
+                    <div style="background: var(--background); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <code>pip install --upgrade prime-trading</code>
+                    </div>
+                    Or pull latest from GitHub:
+                    <div style="background: var(--background); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <code>git pull origin main</code>
+                    </div>
+                    Always backup your configuration before updating. Test updates in paper trading first.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    What data sources does PRIME use?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    PRIME aggregates data from multiple sources:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Real-time price data from your broker</li>
+                        <li>Historical data from Yahoo Finance, Polygon</li>
+                        <li>Economic indicators from FRED</li>
+                        <li>Options data from CBOE</li>
+                        <li>Crypto data from multiple exchanges</li>
+                        <li>News sentiment from various APIs</li>
+                    </ul>
+                    Data is cleaned, normalized, and stored locally for fast access.
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section" data-category="safety">
+            <h2 class="section-title">🛡️ Safety & Security</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is my broker account safe?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    PRIME uses API keys with limited permissions:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>Cannot withdraw funds from your account</li>
+                        <li>Cannot change account settings</li>
+                        <li>Only has trading permissions you grant</li>
+                        <li>API keys are encrypted locally</li>
+                        <li>No keys are ever sent to external servers</li>
+                    </ul>
+                    <div class="info-box">
+                        💡 Always use API keys with minimum required permissions and enable IP whitelisting when available.
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    What if PRIME crashes during trading?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    PRIME has multiple failsafes:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li>All positions have stop-loss orders at broker level</li>
+                        <li>Automatic restart with position recovery</li>
+                        <li>Dead man's switch closes positions if no heartbeat</li>
+                        <li>Email/SMS alerts on system failures</li>
+                        <li>Detailed logs for debugging and recovery</li>
+                    </ul>
+                    Your broker's stop-loss orders remain active even if PRIME is offline.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    How can I test without risking money?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Three ways to test safely:
+                    <ol style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li><strong>Backtesting:</strong> Test strategies on historical data</li>
+                        <li><strong>Paper Trading:</strong> Trade with simulated money in real-time</li>
+                        <li><strong>Small Live Account:</strong> Start with minimum capital after paper success</li>
+                    </ol>
+                    <div class="warning-box">
+                        ⚠️ ALWAYS paper trade for at least 30-60 days before using real money!
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    What are the biggest risks?
+                    <span class="faq-arrow">▼</span>
+                </div>
+                <div class="faq-answer">
+                    The main risks include:
+                    <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+                        <li><strong>Market Risk:</strong> Losses from market movements</li>
+                        <li><strong>Technical Risk:</strong> Software bugs or failures</li>
+                        <li><strong>Overfitting:</strong> Strategies that work in backtests but fail live</li>
+                        <li><strong>Liquidity Risk:</strong> Unable to exit positions</li>
+                        <li><strong>Black Swan Events:</strong> Unprecedented market events</li>
+                        <li><strong>User Error:</strong> Misconfiguration or wrong parameters</li>
+                    </ul>
+                    Read our full <a href="risk-disclosure.html" style="color: var(--primary);">Risk Disclosure</a> before trading.
+                </div>
+            </div>
+        </section>
+
+        <div class="contact-section">
+            <h2>Still have questions?</h2>
+            <p style="color: var(--text-muted); margin-top: 1rem;">Can't find what you're looking for? Get in touch with our support team.</p>
+            <div class="contact-buttons">
+                <a href="documentation.html" class="btn btn-primary">Read Documentation</a>
+                <a href="https://github.com/algocookbook/prime-docs/issues" class="btn btn-primary">GitHub Issues</a>
+                <a href="getting-started.html" class="btn btn-primary">Getting Started Guide</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FAQ interaction
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                item.classList.toggle('open');
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('faqSearch');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        // Category filtering
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const category = btn.dataset.category;
+                document.querySelectorAll('.faq-section').forEach(section => {
+                    if (category === 'all' || section.dataset.category === category) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

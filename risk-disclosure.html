@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Disclosure - PRIME Trading System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .warning-header {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(245, 158, 11, 0.2));
+            border: 2px solid var(--danger);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--danger);
+        }
+
+        .warning-subtitle {
+            font-size: 1.25rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .risk-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--danger);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .risk-icon {
+            color: var(--danger);
+        }
+
+        .risk-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .risk-list li {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: var(--background);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .risk-list li strong {
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .critical-warning {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid var(--danger);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .critical-warning h3 {
+            color: var(--danger);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .protection-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .protection-box h3 {
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .checkbox-list li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .checkbox-list li:before {
+            content: "☐";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .disclaimer {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .disclaimer h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🧠 PRIME</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="risk-disclosure.html">Risk Disclosure</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="warning-header">
+            <h1>⚠️ IMPORTANT RISK DISCLOSURE</h1>
+            <p class="warning-subtitle">Trading involves substantial risk of loss and is not suitable for all investors</p>
+        </div>
+
+        <section class="risk-section">
+            <h2><span class="risk-icon">🔴</span> Market Risks</h2>
+            <ul class="risk-list">
+                <li>
+                    <strong>Total Loss of Capital</strong>
+                    You can lose all of your invested capital. Never trade with money you cannot afford to lose. Past performance does not guarantee future results.
+                </li>
+                <li>
+                    <strong>Market Volatility</strong>
+                    Financial markets can be extremely volatile. Prices can change rapidly and unpredictably due to news, events, or market sentiment.
+                </li>
+                <li>
+                    <strong>Liquidity Risk</strong>
+                    Some securities may have limited liquidity, making it difficult to enter or exit positions at desired prices.
+                </li>
+                <li>
+                    <strong>Systemic Risk</strong>
+                    Market-wide events, economic crises, or "black swan" events can cause significant losses across all positions.
+                </li>
+            </ul>
+        </section>
+
+        <section class="risk-section">
+            <h2><span class="risk-icon">⚡</span> Technology Risks</h2>
+            <ul class="risk-list">
+                <li>
+                    <strong>Software Failures</strong>
+                    PRIME is software and can contain bugs, errors, or unexpected behavior that may result in trading losses.
+                </li>
+                <li>
+                    <strong>Connectivity Issues</strong>
+                    Internet outages, API failures, or broker connectivity problems can prevent order execution or position management.
+                </li>
+                <li>
+                    <strong>Data Feed Errors</strong>
+                    Incorrect or delayed market data can lead to wrong trading decisions and losses.
+                </li>
+                <li>
+                    <strong>Algorithmic Risk</strong>
+                    Automated strategies may behave unexpectedly in unusual market conditions not seen in backtesting.
+                </li>
+            </ul>
+        </section>
+
+        <section class="risk-section">
+            <h2><span class="risk-icon">📊</span> Strategy Risks</h2>
+            <ul class="risk-list">
+                <li>
+                    <strong>Overfitting</strong>
+                    Strategies optimized on historical data may not perform well in future market conditions.
+                </li>
+                <li>
+                    <strong>Model Degradation</strong>
+                    Trading strategies can stop working as market dynamics change or as more traders use similar approaches.
+                </li>
+                <li>
+                    <strong>Correlation Risk</strong>
+                    Multiple strategies may become correlated during market stress, amplifying losses.
+                </li>
+                <li>
+                    <strong>Execution Slippage</strong>
+                    Actual trade prices may differ significantly from expected prices, especially in fast markets.
+                </li>
+            </ul>
+        </section>
+
+        <div class="critical-warning">
+            <h3>🚨 CRITICAL WARNINGS</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 1rem;">❌ <strong>NO GUARANTEED RETURNS:</strong> PRIME does not guarantee profits or protect against losses.</li>
+                <li style="margin-bottom: 1rem;">❌ <strong>NOT FINANCIAL ADVICE:</strong> PRIME is a tool, not a financial advisor. Consult qualified professionals.</li>
+                <li style="margin-bottom: 1rem;">❌ <strong>BACKTESTING ≠ FUTURE:</strong> Past performance in backtests does not predict future results.</li>
+                <li style="margin-bottom: 1rem;">❌ <strong>LEVERAGE DANGER:</strong> Using leverage or margin multiplies both gains AND losses.</li>
+                <li>❌ <strong>TAX IMPLICATIONS:</strong> Trading may have significant tax consequences. Consult a tax professional.</li>
+            </ul>
+        </div>
+
+        <div class="protection-box">
+            <h3>✅ Essential Risk Management Rules</h3>
+            <ul class="checkbox-list">
+                <li>Start with paper trading for at least 30-60 days</li>
+                <li>Never risk more than 1-2% of capital per trade</li>
+                <li>Always use stop-loss orders</li>
+                <li>Diversify across uncorrelated strategies</li>
+                <li>Keep at least 50% of capital in reserve</li>
+                <li>Monitor positions daily</li>
+                <li>Have an emergency exit plan</li>
+                <li>Keep detailed records for taxes</li>
+                <li>Regularly review and adjust risk parameters</li>
+                <li>Never trade on emotion or "gut feeling"</li>
+            </ul>
+        </div>
+
+        <section class="risk-section">
+            <h2><span class="risk-icon">📋</span> Regulatory & Legal Risks</h2>
+            <ul class="risk-list">
+                <li>
+                    <strong>Regulatory Changes</strong>
+                    Trading regulations can change, potentially affecting strategy viability or legality.
+                </li>
+                <li>
+                    <strong>Pattern Day Trading Rules</strong>
+                    US accounts under $25,000 are subject to PDT restrictions limiting day trading.
+                </li>
+                <li>
+                    <strong>Tax Obligations</strong>
+                    You are responsible for all tax obligations from trading activities. Short-term gains are typically taxed at higher rates.
+                </li>
+                <li>
+                    <strong>International Restrictions</strong>
+                    Some features or markets may not be available in all jurisdictions.
+                </li>
+            </ul>
+        </section>
+
+        <section class="risk-section">
+            <h2><span class="risk-icon">💰</span> Capital Protection Guidelines</h2>
+            <ul class="risk-list">
+                <li>
+                    <strong>Start Small</strong>
+                    Begin with the minimum viable capital and scale up only after proven success.
+                </li>
+                <li>
+                    <strong>Emergency Fund</strong>
+                    Never trade with emergency funds, retirement savings, or borrowed money.
+                </li>
+                <li>
+                    <strong>Gradual Scaling</strong>
+                    Increase position sizes slowly over months, not days or weeks.
+                </li>
+                <li>
+                    <strong>Regular Withdrawals</strong>
+                    Regularly withdraw profits to protect gains from future losses.
+                </li>
+            </ul>
+        </section>
+
+        <div class="disclaimer">
+            <h3>Legal Disclaimer</h3>
+            <p>
+                THE PRIME TRADING SYSTEM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. IN NO EVENT SHALL THE DEVELOPERS, CONTRIBUTORS, OR DISTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING BUT NOT LIMITED TO LOSS OF CAPITAL, LOSS OF PROFITS, OR BUSINESS INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE.
+            </p>
+            <p style="margin-top: 1rem;">
+                By using PRIME, you acknowledge that you have read, understood, and agree to be bound by these risk disclosures. You accept full responsibility for all trading decisions and their outcomes. If you do not agree with these terms or do not fully understand the risks, do not use this software.
+            </p>
+            <p style="margin-top: 1rem; font-weight: 600; color: var(--danger);">
+                TRADING IS RISKY. LOSSES CAN EXCEED DEPOSITS. ONLY TRADE WITH RISK CAPITAL.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
