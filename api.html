@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIME API Reference - Complete Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .api-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+
+        .code-block {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .method-card {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .method-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+
+        .method-badge {
+            padding: 0.25rem 0.5rem;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .method-badge.async {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--secondary);
+        }
+
+        .method-badge.property {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+        }
+
+        .param-table {
+            width: 100%;
+            margin: 1rem 0;
+            border-collapse: collapse;
+        }
+
+        .param-table th {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.75rem;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+
+        .param-table td {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+        }
+
+        .param-name {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+        }
+
+        .param-type {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+
+        .sidebar {
+            position: fixed;
+            right: 2rem;
+            top: 120px;
+            width: 250px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+        }
+
+        .sidebar h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--primary);
+        }
+
+        .main-content {
+            max-width: 850px;
+        }
+
+        @media (max-width: 1200px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🧠 PRIME</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="strategies.html">Strategies</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="performance.html">Performance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h4>Quick Navigation</h4>
+            <ul>
+                <li><a href="#primetrader">PrimeTrader</a></li>
+                <li><a href="#strategy">Strategy</a></li>
+                <li><a href="#signal">Signal</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#riskmanager">RiskManager</a></li>
+                <li><a href="#backtester">Backtester</a></li>
+                <li><a href="#datamanager">DataManager</a></li>
+                <li><a href="#websocket">WebSocket</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1>🔧 API Reference</h1>
+                <p class="subtitle">Complete documentation for the PRIME Trading Intelligence API</p>
+            </div>
+
+            <section class="api-section" id="primetrader">
+                <h2>PrimeTrader Class</h2>
+                <p>Main interface for interacting with the PRIME trading system.</p>
+
+                <h3>Initialization</h3>
+                <div class="code-block">
+                    <pre>from prime import PrimeTrader
+
+trader = PrimeTrader(
+    mode='paper',           # 'paper' | 'live' | 'backtest'
+    api_key='YOUR_KEY',     # Optional for paper mode
+    api_secret='YOUR_SECRET',
+    risk_level='moderate',  # 'conservative' | 'moderate' | 'aggressive'
+    strategies=['momentum', 'mean_reversion']
+)</pre>
+                </div>
+
+                <h3>Methods</h3>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">start()</span>
+                        <span class="method-badge async">async</span>
+                    </div>
+                    <p>Starts the trading system and begins monitoring markets.</p>
+                    <table class="param-table">
+                        <tr>
+                            <th>Returns</th>
+                            <td><span class="param-type">bool</span> - Success status</td>
+                        </tr>
+                    </table>
+                    <div class="code-block">
+                        <pre>await trader.start()
+# Trading system is now active</pre>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">stop()</span>
+                        <span class="method-badge async">async</span>
+                    </div>
+                    <p>Stops the trading system and closes all positions if specified.</p>
+                    <table class="param-table">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">close_positions</span></td>
+                            <td><span class="param-type">bool</span></td>
+                            <td>Whether to close all open positions (default: False)</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">get_positions()</span>
+                        <span class="method-badge">method</span>
+                    </div>
+                    <p>Returns all current open positions.</p>
+                    <table class="param-table">
+                        <tr>
+                            <th>Returns</th>
+                            <td><span class="param-type">List[Position]</span> - List of position objects</td>
+                        </tr>
+                    </table>
+                    <div class="code-block">
+                        <pre>positions = trader.get_positions()
+for pos in positions:
+    print(f"{pos.symbol}: {pos.quantity} @ ${pos.entry_price}")</pre>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">set_risk_params()</span>
+                        <span class="method-badge">method</span>
+                    </div>
+                    <p>Configure risk management parameters.</p>
+                    <table class="param-table">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">max_position_size</span></td>
+                            <td><span class="param-type">float</span></td>
+                            <td>Maximum position size as fraction of portfolio</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">stop_loss</span></td>
+                            <td><span class="param-type">float</span></td>
+                            <td>Stop loss percentage</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">take_profit</span></td>
+                            <td><span class="param-type">float</span></td>
+                            <td>Take profit percentage</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">max_drawdown</span></td>
+                            <td><span class="param-type">float</span></td>
+                            <td>Maximum allowed drawdown</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <section class="api-section" id="strategy">
+                <h2>Strategy Class</h2>
+                <p>Base class for implementing custom trading strategies.</p>
+
+                <h3>Creating Custom Strategies</h3>
+                <div class="code-block">
+                    <pre>from prime import Strategy
+
+class MyStrategy(Strategy):
+    def __init__(self):
+        super().__init__(
+            name="My Custom Strategy",
+            timeframe="1h",
+            indicators=["RSI", "MACD"]
+        )
+    
+    def generate_signal(self, data):
+        # Your signal logic here
+        if data.rsi < 30:
+            return Signal("BUY", confidence=0.8)
+        elif data.rsi > 70:
+            return Signal("SELL", confidence=0.8)
+        return None</pre>
+                </div>
+
+                <h3>Methods</h3>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">generate_signal()</span>
+                        <span class="method-badge">abstract</span>
+                    </div>
+                    <p>Must be implemented in custom strategies to generate trading signals.</p>
+                    <table class="param-table">
+                        <tr>
+                            <td><span class="param-name">data</span></td>
+                            <td><span class="param-type">MarketData</span></td>
+                            <td>Current market data including price and indicators</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">calculate_position_size()</span>
+                        <span class="method-badge">method</span>
+                    </div>
+                    <p>Calculates optimal position size based on Kelly criterion or custom logic.</p>
+                </div>
+            </section>
+
+            <section class="api-section" id="signal">
+                <h2>Signal Class</h2>
+                <p>Represents a trading signal generated by strategies.</p>
+
+                <h3>Signal Properties</h3>
+                <div class="code-block">
+                    <pre>signal = Signal(
+    action="BUY",        # "BUY" | "SELL" | "HOLD"
+    symbol="AAPL",
+    confidence=0.85,     # 0.0 to 1.0
+    quantity=100,
+    strategy="momentum",
+    metadata={
+        "indicators": ["RSI", "MACD"],
+        "timeframe": "1h"
+    }
+)</pre>
+                </div>
+            </section>
+
+            <section class="api-section" id="portfolio">
+                <h2>Portfolio Class</h2>
+                <p>Manages portfolio state, positions, and performance metrics.</p>
+
+                <h3>Methods</h3>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">get_equity()</span>
+                        <span class="method-badge property">property</span>
+                    </div>
+                    <p>Returns current portfolio equity.</p>
+                    <div class="code-block">
+                        <pre>current_equity = portfolio.get_equity()
+print(f"Portfolio Value: ${current_equity:,.2f}")</pre>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-header">
+                        <span class="method-name">get_performance()</span>
+                        <span class="method-badge">method</span>
+                    </div>
+                    <p>Returns comprehensive performance metrics.</p>
+                    <table class="param-table">
+                        <tr>
+                            <th>Returns</th>
+                            <td><span class="param-type">PerformanceMetrics</span> - Object containing Sharpe, returns, drawdown, etc.</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <section class="api-section" id="riskmanager">
+                <h2>RiskManager Class</h2>
+                <p>Handles all risk management operations and position sizing.</p>
+
+                <h3>Configuration</h3>
+                <div class="code-block">
+                    <pre>risk_manager = RiskManager(
+    max_position_size=0.05,      # 5% max per position
+    max_portfolio_risk=0.15,      # 15% max portfolio risk
+    correlation_limit=0.7,        # Max correlation between positions
+    use_circuit_breaker=True,
+    circuit_breaker_levels=[-0.05, -0.10, -0.15]
+)</pre>
+                </div>
+            </section>
+
+            <section class="api-section" id="backtester">
+                <h2>Backtester Class</h2>
+                <p>Comprehensive backtesting engine with walk-forward analysis.</p>
+
+                <h3>Running Backtests</h3>
+                <div class="code-block">
+                    <pre>from prime import Backtester
+
+backtester = Backtester(
+    strategies=[my_strategy],
+    start_date="2020-01-01",
+    end_date="2024-01-01",
+    initial_capital=100000
+)
+
+results = backtester.run()
+print(f"Total Return: {results.total_return}%")
+print(f"Sharpe Ratio: {results.sharpe_ratio}")
+print(f"Max Drawdown: {results.max_drawdown}%")</pre>
+                </div>
+            </section>
+
+            <section class="api-section" id="websocket">
+                <h2>WebSocket Streams</h2>
+                <p>Real-time data streaming for live market updates.</p>
+
+                <h3>Subscribing to Streams</h3>
+                <div class="code-block">
+                    <pre>from prime import WebSocketClient
+
+ws = WebSocketClient()
+
+@ws.on('trade')
+def on_trade(data):
+    print(f"Trade: {data.symbol} @ ${data.price}")
+
+@ws.on('signal')
+def on_signal(signal):
+    print(f"New Signal: {signal.action} {signal.symbol}")
+
+ws.subscribe(['AAPL', 'TSLA', 'SPY'])
+ws.start()</pre>
+                </div>
+            </section>
+
+            <section class="api-section">
+                <h2>Error Handling</h2>
+                <p>PRIME uses custom exceptions for different error scenarios:</p>
+                
+                <div class="code-block">
+                    <pre>from prime.exceptions import (
+    InsufficientCapitalError,
+    StrategyError,
+    DataError,
+    RiskLimitError
+)
+
+try:
+    trader.execute_trade(signal)
+except InsufficientCapitalError as e:
+    print(f"Not enough capital: {e}")
+except RiskLimitError as e:
+    print(f"Risk limit exceeded: {e}")</pre>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

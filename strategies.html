@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIME Strategies - 775+ Trading Algorithms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .category-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .strategy-card {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .strategy-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .strategy-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .strategy-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .strategy-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tag.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+        }
+
+        .tag.warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--accent);
+        }
+
+        .search-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🧠 PRIME</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="strategies.html">Strategies</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="performance.html">Performance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📊 Strategy Catalog</h1>
+            <p class="subtitle">775+ professionally curated trading strategies from top quantitative repositories</p>
+        </div>
+
+        <div class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-number">775+</div>
+                <div class="stat-label">Total Strategies</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">127</div>
+                <div class="stat-label">Momentum</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">89</div>
+                <div class="stat-label">Mean Reversion</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">112</div>
+                <div class="stat-label">Machine Learning</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">234</div>
+                <div class="stat-label">Technical Analysis</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">97</div>
+                <div class="stat-label">Risk Management</div>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search strategies by name, indicator, or description...">
+            <div class="filter-buttons">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Momentum</button>
+                <button class="filter-btn">Mean Reversion</button>
+                <button class="filter-btn">Machine Learning</button>
+                <button class="filter-btn">Technical</button>
+                <button class="filter-btn">Risk</button>
+            </div>
+        </div>
+
+        <section class="category-section">
+            <h2>📈 Momentum Strategies (127)</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-name">Adaptive Momentum Breakout</div>
+                    <div class="strategy-desc">Uses dynamic volatility bands to identify breakout opportunities with momentum confirmation</div>
+                    <div class="strategy-tags">
+                        <span class="tag">ATR</span>
+                        <span class="tag">Breakout</span>
+                        <span class="tag success">75% Win Rate</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Triple EMA Crossover</div>
+                    <div class="strategy-desc">Combines three exponential moving averages for trend identification and entry timing</div>
+                    <div class="strategy-tags">
+                        <span class="tag">EMA</span>
+                        <span class="tag">Trend</span>
+                        <span class="tag success">Sharpe 1.8</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Velocity Oscillator System</div>
+                    <div class="strategy-desc">Measures price acceleration to capture momentum shifts early</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Custom</span>
+                        <span class="tag">Oscillator</span>
+                        <span class="tag warning">High Frequency</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section">
+            <h2>🔄 Mean Reversion Strategies (89)</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-name">Bollinger Band Squeeze</div>
+                    <div class="strategy-desc">Identifies low volatility periods followed by explosive moves using band compression</div>
+                    <div class="strategy-tags">
+                        <span class="tag">BB</span>
+                        <span class="tag">Volatility</span>
+                        <span class="tag success">68% Win Rate</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">RSI Divergence Hunter</div>
+                    <div class="strategy-desc">Detects price/RSI divergences for high-probability reversal trades</div>
+                    <div class="strategy-tags">
+                        <span class="tag">RSI</span>
+                        <span class="tag">Divergence</span>
+                        <span class="tag success">Sharpe 1.6</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Statistical Z-Score Arbitrage</div>
+                    <div class="strategy-desc">Uses statistical deviations from mean to identify overbought/oversold conditions</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Statistics</span>
+                        <span class="tag">Z-Score</span>
+                        <span class="tag">Arbitrage</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section">
+            <h2>🤖 Machine Learning Strategies (112)</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-name">LSTM Price Predictor</div>
+                    <div class="strategy-desc">Deep learning model using LSTM networks for time series price prediction</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Neural Network</span>
+                        <span class="tag">LSTM</span>
+                        <span class="tag success">82% Accuracy</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Random Forest Ensemble</div>
+                    <div class="strategy-desc">Combines multiple decision trees for robust signal generation</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Ensemble</span>
+                        <span class="tag">RF</span>
+                        <span class="tag success">Sharpe 2.1</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">XGBoost Market Classifier</div>
+                    <div class="strategy-desc">Gradient boosting model for market regime classification and trading</div>
+                    <div class="strategy-tags">
+                        <span class="tag">XGBoost</span>
+                        <span class="tag">Classification</span>
+                        <span class="tag warning">Complex</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section">
+            <h2>⚖️ Pairs Trading Strategies (76)</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-name">Cointegration Pairs Trader</div>
+                    <div class="strategy-desc">Identifies and trades cointegrated pairs using Engle-Granger methodology</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Cointegration</span>
+                        <span class="tag">Pairs</span>
+                        <span class="tag success">Low Risk</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Sector Rotation Alpha</div>
+                    <div class="strategy-desc">Rotates between sectors based on relative strength and momentum</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Sectors</span>
+                        <span class="tag">Rotation</span>
+                        <span class="tag success">Consistent</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Correlation Arbitrage System</div>
+                    <div class="strategy-desc">Exploits temporary decorrelation between historically correlated assets</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Correlation</span>
+                        <span class="tag">Arbitrage</span>
+                        <span class="tag">Statistical</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section">
+            <h2>📊 Technical Analysis Strategies (234)</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-name">MACD Histogram Divergence</div>
+                    <div class="strategy-desc">Advanced MACD strategy focusing on histogram patterns and divergences</div>
+                    <div class="strategy-tags">
+                        <span class="tag">MACD</span>
+                        <span class="tag">Classic</span>
+                        <span class="tag success">Proven</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Ichimoku Cloud System</div>
+                    <div class="strategy-desc">Complete trading system using all Ichimoku components for trend and support/resistance</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Ichimoku</span>
+                        <span class="tag">Japanese</span>
+                        <span class="tag success">All-in-one</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Volume Profile Trading</div>
+                    <div class="strategy-desc">Uses volume distribution to identify key price levels and market structure</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Volume</span>
+                        <span class="tag">Profile</span>
+                        <span class="tag">Structure</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="category-section">
+            <h2>🛡️ Risk Management Strategies (97)</h2>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-name">Dynamic Position Sizing</div>
+                    <div class="strategy-desc">Adjusts position sizes based on volatility, correlation, and account risk</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Risk</span>
+                        <span class="tag">Position</span>
+                        <span class="tag success">Protective</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Portfolio VaR Optimizer</div>
+                    <div class="strategy-desc">Optimizes portfolio allocation to minimize Value at Risk</div>
+                    <div class="strategy-tags">
+                        <span class="tag">VaR</span>
+                        <span class="tag">Portfolio</span>
+                        <span class="tag success">Institutional</span>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Adaptive Stop Loss System</div>
+                    <div class="strategy-desc">Dynamically adjusts stop losses based on market conditions and volatility</div>
+                    <div class="strategy-tags">
+                        <span class="tag">Stop Loss</span>
+                        <span class="tag">Adaptive</span>
+                        <span class="tag warning">Essential</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Search and filter functionality
+        const searchInput = document.querySelector('.search-input');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const strategyCards = document.querySelectorAll('.strategy-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            strategyCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // Filter logic would go here
+            });
+        });
+    </script>
+</body>
+</html>

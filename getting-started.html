@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started with PRIME - Quick Start Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .step-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .code-block {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .checklist {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .checklist li {
+            padding: 0.75rem 0;
+            padding-left: 2rem;
+            position: relative;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+        }
+
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+
+        .checklist li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(16, 185, 129, 0.1));
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🧠 PRIME</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="strategies.html">Strategies</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="performance.html">Performance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>🚀 Getting Started</h1>
+            <p class="subtitle">Get up and running with PRIME in 5 minutes</p>
+        </div>
+
+        <section class="step-section">
+            <h2><span class="step-number">1</span>Installation</h2>
+            <p>Install the PRIME trading system using pip:</p>
+            <div class="code-block">
+                <pre>pip install prime-trading
+
+# Or install from source
+git clone https://github.com/algocookbook/prime
+cd prime
+pip install -e .</pre>
+            </div>
+            <div class="info-box">
+                <strong>Requirements:</strong> Python 3.9+, 8GB RAM minimum, stable internet connection
+            </div>
+        </section>
+
+        <section class="step-section">
+            <h2><span class="step-number">2</span>Configuration</h2>
+            <p>Create a configuration file with your API credentials:</p>
+            <div class="code-block">
+                <pre># config.yaml
+trading:
+  mode: paper  # Start with paper trading
+  api_key: YOUR_ALPACA_KEY
+  api_secret: YOUR_ALPACA_SECRET
+  
+risk:
+  level: moderate
+  max_position_size: 0.05
+  stop_loss: 0.02
+  take_profit: 0.04
+  
+strategies:
+  - momentum
+  - mean_reversion
+  - ml_ensemble</pre>
+            </div>
+        </section>
+
+        <section class="step-section">
+            <h2><span class="step-number">3</span>First Script</h2>
+            <p>Create your first PRIME trading script:</p>
+            <div class="code-block">
+                <pre>from prime import PrimeTrader
+
+# Initialize the trading system
+trader = PrimeTrader(config='config.yaml')
+
+# Set up risk parameters
+trader.set_risk_params(
+    max_drawdown=0.15,
+    position_sizing='kelly'
+)
+
+# Start paper trading
+trader.start()
+
+# Monitor performance
+print(f"System Status: {trader.status}")
+print(f"Active Positions: {len(trader.get_positions())}")
+print(f"Current P&L: ${trader.get_pnl():,.2f}")</pre>
+            </div>
+        </section>
+
+        <section class="step-section">
+            <h2><span class="step-number">4</span>Paper Trading</h2>
+            <p>Always start with paper trading to test your configuration:</p>
+            <ul class="checklist">
+                <li>Test all strategies in paper mode first</li>
+                <li>Run for at least 30 days before going live</li>
+                <li>Monitor performance metrics daily</li>
+                <li>Adjust risk parameters based on results</li>
+                <li>Verify all integrations are working</li>
+            </ul>
+            <div class="warning-box">
+                <strong>⚠️ Important:</strong> Never skip paper trading. PRIME needs time to adapt to your risk profile and market conditions.
+            </div>
+        </section>
+
+        <section class="step-section">
+            <h2><span class="step-number">5</span>Going Live</h2>
+            <p>When you're ready for live trading:</p>
+            <div class="code-block">
+                <pre># Update your config
+trading:
+  mode: live  # Switch to live mode
+  
+# Add safety checks
+safety:
+  require_confirmation: true
+  max_daily_loss: 0.02
+  circuit_breaker: true
+  
+# Initialize with safety
+trader = PrimeTrader(
+    config='config.yaml',
+    safe_mode=True  # Extra safety for live trading
+)</pre>
+            </div>
+            <ul class="checklist">
+                <li>Start with minimal capital allocation</li>
+                <li>Enable all safety features</li>
+                <li>Set conservative risk limits</li>
+                <li>Monitor closely for first week</li>
+                <li>Gradually increase position sizes</li>
+            </ul>
+        </section>
+
+        <section class="step-section">
+            <h2>📚 Next Steps</h2>
+            <div class="button-group">
+                <a href="documentation.html" class="btn btn-primary">Read Full Documentation</a>
+                <a href="api.html" class="btn btn-secondary">Explore API</a>
+                <a href="strategies.html" class="btn btn-secondary">Browse Strategies</a>
+            </div>
+        </section>
+
+        <section class="step-section">
+            <h2>🆘 Need Help?</h2>
+            <p>Get support through these channels:</p>
+            <ul class="checklist">
+                <li>Documentation: <a href="documentation.html" style="color: var(--primary);">Full documentation</a></li>
+                <li>GitHub Issues: <a href="https://github.com/algocookbook/prime-docs" style="color: var(--primary);">Report bugs or request features</a></li>
+                <li>Discord Community: Join our trading community</li>
+                <li>Email Support: support@primetrading.ai</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIME Performance - Live Trading Metrics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --accent: #f59e0b;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 3rem 0;
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, transparent 100%);
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .metric-value.positive {
+            color: var(--success);
+        }
+
+        .metric-value.negative {
+            color: var(--danger);
+        }
+
+        .metric-change {
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .chart-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .returns-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .returns-table th {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 1rem;
+            text-align: left;
+            border: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .returns-table td {
+            padding: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .returns-table tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .positive-return {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .negative-return {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .chart-placeholder {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-bars {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 0 2rem;
+            height: 70%;
+        }
+
+        .bar {
+            width: 20px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 4px 4px 0 0;
+            opacity: 0.8;
+        }
+
+        .strategy-performance {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .strategy-card {
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .strategy-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .strategy-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .live-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 20px;
+            color: var(--success);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">🧠 PRIME</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="documentation.html">Documentation</a></li>
+                <li><a href="strategies.html">Strategies</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="performance.html">Performance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>📈 Performance Metrics</h1>
+            <p class="subtitle">Real-time performance tracking and historical results</p>
+            <span class="live-indicator">
+                <span class="pulse"></span>
+                LIVE TRADING
+            </span>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Total Return (YTD)</div>
+                <div class="metric-value positive">+24.3%</div>
+                <div class="metric-change">↑ 2.1% this month</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Sharpe Ratio</div>
+                <div class="metric-value">1.82</div>
+                <div class="metric-change">30-day rolling average</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Win Rate</div>
+                <div class="metric-value">59.4%</div>
+                <div class="metric-change">847 wins / 578 losses</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Max Drawdown</div>
+                <div class="metric-value negative">-12.8%</div>
+                <div class="metric-change">18 days recovery</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Calmar Ratio</div>
+                <div class="metric-value">1.62</div>
+                <div class="metric-change">Risk-adjusted return</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Active Positions</div>
+                <div class="metric-value">27</div>
+                <div class="metric-change">$487,234 deployed</div>
+            </div>
+        </div>
+
+        <section class="chart-section">
+            <h2>Equity Curve</h2>
+            <div class="chart-placeholder">
+                <div class="chart-bars">
+                    <div class="bar" style="height: 60%"></div>
+                    <div class="bar" style="height: 65%"></div>
+                    <div class="bar" style="height: 62%"></div>
+                    <div class="bar" style="height: 70%"></div>
+                    <div class="bar" style="height: 68%"></div>
+                    <div class="bar" style="height: 75%"></div>
+                    <div class="bar" style="height: 73%"></div>
+                    <div class="bar" style="height: 80%"></div>
+                    <div class="bar" style="height: 82%"></div>
+                    <div class="bar" style="height: 85%"></div>
+                    <div class="bar" style="height: 83%"></div>
+                    <div class="bar" style="height: 90%"></div>
+                </div>
+                <span style="position: absolute; top: 50%; z-index: 10;">Portfolio Growth: $100,000 → $124,300</span>
+            </div>
+        </section>
+
+        <section class="chart-section">
+            <h2>Monthly Returns</h2>
+            <table class="returns-table">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Return</th>
+                        <th>Trades</th>
+                        <th>Win Rate</th>
+                        <th>Best Trade</th>
+                        <th>Worst Trade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>August 2025</td>
+                        <td class="positive-return">+2.1%</td>
+                        <td>42</td>
+                        <td>61.9%</td>
+                        <td class="positive-return">+4.2%</td>
+                        <td class="negative-return">-1.8%</td>
+                    </tr>
+                    <tr>
+                        <td>July 2025</td>
+                        <td class="positive-return">+3.8%</td>
+                        <td>156</td>
+                        <td>58.3%</td>
+                        <td class="positive-return">+6.1%</td>
+                        <td class="negative-return">-2.3%</td>
+                    </tr>
+                    <tr>
+                        <td>June 2025</td>
+                        <td class="positive-return">+1.9%</td>
+                        <td>148</td>
+                        <td>57.4%</td>
+                        <td class="positive-return">+5.3%</td>
+                        <td class="negative-return">-2.7%</td>
+                    </tr>
+                    <tr>
+                        <td>May 2025</td>
+                        <td class="negative-return">-0.8%</td>
+                        <td>132</td>
+                        <td>52.3%</td>
+                        <td class="positive-return">+3.9%</td>
+                        <td class="negative-return">-3.1%</td>
+                    </tr>
+                    <tr>
+                        <td>April 2025</td>
+                        <td class="positive-return">+4.2%</td>
+                        <td>169</td>
+                        <td>64.5%</td>
+                        <td class="positive-return">+7.8%</td>
+                        <td class="negative-return">-1.5%</td>
+                    </tr>
+                    <tr>
+                        <td>March 2025</td>
+                        <td class="positive-return">+2.7%</td>
+                        <td>143</td>
+                        <td>59.4%</td>
+                        <td class="positive-return">+5.2%</td>
+                        <td class="negative-return">-2.1%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="chart-section">
+            <h2>Strategy Performance Breakdown</h2>
+            <div class="strategy-performance">
+                <div class="strategy-card">
+                    <div class="strategy-name">Momentum Strategies</div>
+                    <div class="strategy-stats">
+                        <div class="stat-item">
+                            <div class="stat-value positive">+18.2%</div>
+                            <div class="stat-label">Return</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.1</div>
+                            <div class="stat-label">Sharpe</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">62%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Mean Reversion</div>
+                    <div class="strategy-stats">
+                        <div class="stat-item">
+                            <div class="stat-value positive">+14.7%</div>
+                            <div class="stat-label">Return</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.7</div>
+                            <div class="stat-label">Sharpe</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">58%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Machine Learning</div>
+                    <div class="strategy-stats">
+                        <div class="stat-item">
+                            <div class="stat-value positive">+21.5%</div>
+                            <div class="stat-label">Return</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.9</div>
+                            <div class="stat-label">Sharpe</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">61%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Pairs Trading</div>
+                    <div class="strategy-stats">
+                        <div class="stat-item">
+                            <div class="stat-value positive">+11.3%</div>
+                            <div class="stat-label">Return</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.3</div>
+                            <div class="stat-label">Sharpe</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">65%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Technical Analysis</div>
+                    <div class="strategy-stats">
+                        <div class="stat-item">
+                            <div class="stat-value positive">+16.8%</div>
+                            <div class="stat-label">Return</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.6</div>
+                            <div class="stat-label">Sharpe</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">57%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-name">Risk Management</div>
+                    <div class="strategy-stats">
+                        <div class="stat-item">
+                            <div class="stat-value positive">+9.2%</div>
+                            <div class="stat-label">Return</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.8</div>
+                            <div class="stat-label">Sharpe</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">71%</div>
+                            <div class="stat-label">Win Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chart-section">
+            <h2>Risk Metrics</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Value at Risk (95%)</div>
+                    <div class="metric-value">-2.3%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Beta to S&P 500</div>
+                    <div class="metric-value">0.67</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Sortino Ratio</div>
+                    <div class="metric-value">2.14</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Avg Trade Duration</div>
+                    <div class="metric-value">4.2 days</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="chart-section">
+            <h2>Benchmark Comparison</h2>
+            <table class="returns-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>PRIME</th>
+                        <th>S&P 500</th>
+                        <th>NASDAQ</th>
+                        <th>Hedge Fund Index</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>YTD Return</td>
+                        <td class="positive-return">+24.3%</td>
+                        <td>+15.2%</td>
+                        <td>+18.7%</td>
+                        <td>+11.4%</td>
+                    </tr>
+                    <tr>
+                        <td>Sharpe Ratio</td>
+                        <td class="positive-return">1.82</td>
+                        <td>1.21</td>
+                        <td>1.34</td>
+                        <td>1.08</td>
+                    </tr>
+                    <tr>
+                        <td>Max Drawdown</td>
+                        <td class="positive-return">-12.8%</td>
+                        <td>-18.3%</td>
+                        <td>-21.4%</td>
+                        <td>-15.2%</td>
+                    </tr>
+                    <tr>
+                        <td>Volatility</td>
+                        <td class="positive-return">13.4%</td>
+                        <td>17.2%</td>
+                        <td>19.8%</td>
+                        <td>14.1%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
